@@ -1,0 +1,40 @@
+# Arquivos de build comuns para projetos em C
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+*.lo
+*.la
+*.pch
+*.gch
+*.optrpt
+*.dSYM/
+*.core
+*.core.*
+*~
+
+# Diretórios de build
+build/
+bin/
+obj/
+Debug/
+Release/
+
+# Arquivos temporários e editor
+*.tmp
+*.log
+*.swp
+*.swo
+*.swn
+.vscode/
+.idea/
+
+# Extensões adicionais
+*.img
+*.pdf
