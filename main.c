@@ -18,6 +18,7 @@ void criar_imagem_de_disco() {
 
 int main() {
     //criar_imagem_de_disco();
+    printf("Makefile funcionando.");
 
     return 0;
 }
