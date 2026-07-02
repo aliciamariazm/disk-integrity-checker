@@ -3,11 +3,11 @@
 ### Iniciando um projeto
 - Criar repositório no site do GitHub
 - git init
-- git add [nome do arquivo]
-- git commit -m "[mensagem]"
+- git add [nome do arquivo] *
+- git commit -m "[mensagem]" *
 - git branch -M [nome da branch]
 - git remote add origin [link do repositório]
-- git push -u origin [nome da branch] -> só a primeira vez
+- git push -u origin [nome da branch] -> só a primeira vez *
 
 ### Comandos adicionais
 - git push: envia as alterações locais para o repositório

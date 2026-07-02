@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <openssl/evp.h>
 
-int qtd_blocos_disco = 8;
-size_t conversao_para_bytes = 4096 * 4;
+size_t conversao_para_bytes = 4096 * 4; //retorna o tamanho em bytes
 
 void criar_imagem_de_disco() {
     size_t tamanho_em_bytes = conversao_para_bytes;
@@ -20,6 +20,7 @@ void criar_imagem_de_disco() {
 }
 
 unsigned char *ler_bloco_disco(size_t indice_bloco){
+
     FILE *disco = fopen("disco.img", "rb");
     size_t offset = indice_bloco * 4096;
 
@@ -31,26 +32,54 @@ unsigned char *ler_bloco_disco(size_t indice_bloco){
         return NULL;
     }
 
-    fseek(disco, offset, SEEK_SET);
+    fseek(disco, offset, SEEK_SET); //posiciona o cursor
     fread(buffer, 4096, 1, disco);
     fclose(disco);
+
     return buffer;
 }
 
-int main() {
-    unsigned char *resultado = ler_bloco_disco(0);
+unsigned char *gerar_hash(unsigned char *dados_do_bloco){
+    unsigned char hash[EVP_MAX_MD_SIZE];
+    int tamanho_do_hash;
+    EVP_MD_CTX *contexto = EVP_MD_CTX_new();
 
-    if(resultado == NULL){
+    if(contexto == NULL){
+        printf("[GERAR_HASH] > Erro ao criar o contexto.\n");
+        return NULL;
+    }
+
+    EVP_DigestInit_ex(contexto, EVP_sha256(), NULL);
+    EVP_DigestUpdate(contexto, dados_do_bloco, 4096);
+    EVP_DigestFinal_ex(contexto, hash, &tamanho_do_hash);
+    EVP_MD_CTX_free(contexto);
+
+    unsigned char *result = hash;
+    return result;
+}
+
+int main() {
+    unsigned char *dados_do_bloco = ler_bloco_disco(1);
+    unsigned char *hash;
+
+    if(dados_do_bloco == NULL){
         return 1;
     }
 
-    printf("Resultado: ");
-    for(int i = 0; i < 46; i++){
-        printf("%02x ", resultado[i]);
+    hash = gerar_hash(dados_do_bloco);
+    
+    printf("Dados do bloco: ");
+    for(int i = 0; i < 8; i++){
+        printf("%02x ", dados_do_bloco[i]);
+    }
+    
+    printf("\nHash: ");
+    for(int i = 0; i < 32; i++){
+        printf("%02x ", hash[i]);
     }
 
     printf("\n");
     system("pause");
-    free(resultado);
+    free(dados_do_bloco);
     return 0;
 }

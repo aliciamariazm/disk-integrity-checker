@@ -3,7 +3,7 @@
 
 # Para compilação (make all)
 all:
-	gcc main.c -o programa
+	gcc main.c -o programa.exe -I"C:\Program Files\OpenSSL-Win64\include" -L"C:\Program Files\OpenSSL-Win64\lib" -lcrypto -lssl
 
 # Para compilação e execução (make test)
 test: all
